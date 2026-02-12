@@ -54,6 +54,13 @@ Then open **http://localhost:1455/** in your browser and add Codex accounts via 
 
 No code or server configuration is required beyond adding accounts in the config page.
 
+## Features
+
+- **Multi-account round-robin** — Requests are distributed across accounts; one account failure automatically switches to the next (failover).
+- **Config page** — Dashboard, Models (quota display), Accounts (OAuth login), Logs (level filter, grep, clear), Settings (language, base URL). Data refreshes every 5 seconds.
+- **Responsive UI** — Works on desktop and mobile; sidebar collapses to a menu on small screens.
+- **Bilingual** — Interface and log messages in English and 简体中文.
+
 ## Using [free.violetteam.cloud](https://free.violetteam.cloud/) for verification
 
 If you use [free.violetteam.cloud](https://free.violetteam.cloud/) to receive verification emails (e.g. when registering a ChatGPT/Codex account), delivery can be a bit slow—please wait patiently. If you still don’t receive the code after a long time, click **Resend verification code**.
