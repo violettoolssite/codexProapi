@@ -19,28 +19,69 @@ const BROWSER_HEADERS = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
 };
 
-/**
- * 将 OpenAI Chat Completions 的 messages 转为 Responses API 的 input
- */
-function messagesToInput(messages) {
-  return messages.map((msg) => {
-    let text = '';
-    if (typeof msg.content === 'string') {
-      text = msg.content;
-    } else if (Array.isArray(msg.content)) {
-      text = msg.content
-        .map((c) => (c && typeof c === 'object' && c.text != null ? c.text : typeof c === 'string' ? c : ''))
-        .filter(Boolean)
-        .join('\n');
-    } else {
-      text = String(msg.content ?? '');
+function getMessageContentParts(msg) {
+  const content = [];
+  const raw = msg.content;
+  if (typeof raw === 'string') {
+    if (raw.trim()) content.push({ type: 'text', text: raw });
+  } else if (Array.isArray(raw)) {
+    for (const c of raw) {
+      if (c == null) continue;
+      if (typeof c === 'string') {
+        if (c.trim()) content.push({ type: 'text', text: c });
+        continue;
+      }
+      if (typeof c !== 'object') continue;
+      if (c.type === 'image_url' || c.image_url) {
+        const url = typeof c.image_url === 'string' ? c.image_url : (c.image_url?.url || '');
+        const detail = c.image_url?.detail || 'auto';
+        if (url) content.push({ type: 'image_url', url, detail });
+      } else if (c.type === 'text' || c.text != null) {
+        const text = String(c.text ?? '').trim();
+        if (text) content.push({ type: 'text', text });
+      }
     }
-    return {
-      type: 'message',
-      role: msg.role,
-      content: [{ type: 'input_text', text }],
-    };
-  });
+  } else {
+    const text = String(raw ?? '').trim();
+    if (text) content.push({ type: 'text', text });
+  }
+  return content;
+}
+
+function messagesToInput(messages) {
+  const parts = [];
+  let hasImage = false;
+  const textLines = [];
+
+  for (const msg of messages) {
+    const role = String(msg.role || 'user').toLowerCase();
+    const contentParts = getMessageContentParts(msg);
+    if (contentParts.length === 0) continue;
+
+    const texts = contentParts.filter((p) => p.type === 'text').map((p) => p.text);
+    const images = contentParts.filter((p) => p.type === 'image_url');
+
+    if (role === 'assistant') {
+      textLines.push(`Assistant: ${texts.join(' ')}`);
+      continue;
+    }
+    if (role === 'system') {
+      textLines.push(`System: ${texts.join(' ')}`);
+      continue;
+    }
+    // user
+    if (textLines.length) textLines.push('');
+    textLines.push(`User: ${texts.join(' ')}`);
+    for (const img of images) {
+      hasImage = true;
+      parts.push({ type: 'input_image', image_url: img.url, detail: img.detail || 'auto' });
+    }
+  }
+
+  const fullText = textLines.join('\n').trim();
+  if (fullText) parts.unshift({ type: 'input_text', text: fullText });
+  if (parts.length === 0) return [];
+  return [{ type: 'message', role: 'user', content: parts }];
 }
 
 /**

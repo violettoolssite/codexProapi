@@ -54,6 +54,10 @@ npm start
 
 无需改代码或做服务端配置，只需在配置页添加账号即可使用。
 
+## 多轮对话与后端格式说明
+
+本服务上游为 ChatGPT 的 Codex 后端（`chatgpt.com/backend-api/codex/responses`）。该后端对 **assistant** 消息的 content 只接受 `output_text` 等「输出」类型；若对 assistant 使用 `input_text` 会返回 400。因此代理采用折中方案：**不单独提交 assistant 消息**，而是把整段对话（含 user / assistant / system）拼成一段带 `User:`、`Assistant:`、`System:` 前缀的文本，作为**一条 user 的 input_text** 发给后端。客户端仍按 OpenAI 格式传 `messages: [{role, content}, ...]`，多轮对话由代理自动完成上述转换。
+
 ## 功能说明
 
 - **多账号轮询与故障切换** — 请求在多账号间轮询；某账号失败时自动切换下一个。

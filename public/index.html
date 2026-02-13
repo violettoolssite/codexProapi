@@ -1242,6 +1242,7 @@
         'invoke.curl_linux': 'curl (Linux / macOS)',
         'invoke.python': 'Python (openai)',
         'invoke.nodejs': 'Node.js (openai)',
+        'invoke.chat_multi_turn': '多轮对话示例',
         'invoke.total_quota': '总剩余',
         'modal.add_title': '添加账号',
         'modal.desc': '粘贴 Codex <code>auth.json</code> 内容或上传文件，该账号将参与轮询请求。',
@@ -1343,6 +1344,7 @@
         'invoke.curl_linux': 'curl (Linux / macOS)',
         'invoke.python': 'Python (openai)',
         'invoke.nodejs': 'Node.js (openai)',
+        'invoke.chat_multi_turn': 'Multi-turn example',
         'invoke.total_quota': 'Total remaining',
         'modal.add_title': 'Add New Account',
         'modal.desc': 'Paste your Codex <code>auth.json</code> content or upload the file. The account will be used for round-robin API requests.',
@@ -1614,11 +1616,13 @@
       }
       const chatCmds = document.getElementById('docChatCmds');
       if (chatCmds) {
+        const multiTurnPy = 'from openai import OpenAI\n\nclient = OpenAI(base_url="' + base + '", api_key="sk-")\nr = client.chat.completions.create(\n    model="gpt-5.3-codex",\n    messages=[\n        {"role": "user", "content": "记住这个数字：42"},\n        {"role": "assistant", "content": "好的，我记住了 42。"},\n        {"role": "user", "content": "我刚刚让你记住的数字是多少？只回答数字。"}\n    ]\n)\nprint(r.choices[0].message.content)';
         chatCmds.innerHTML =
           block('invoke.curl_win', 'curl -X POST "' + chatUrl + '" ^\n  -H "Content-Type: application/json" ^\n  -d "' + chatBodyWin + '"', 'bash') +
           block('invoke.curl_linux', "curl -X POST '" + chatUrl + "' \\\n  -H 'Content-Type: application/json' \\\n  -d '" + chatBodyLinux + "'", 'bash') +
           block('invoke.python', 'from openai import OpenAI\n\nclient = OpenAI(\n    base_url="' + base + '",\n    api_key="sk-"\n)\nr = client.chat.completions.create(\n    model="gpt-5.3-codex",\n    messages=[{"role": "user", "content": "Hello"}]\n)\nprint(r)', 'python') +
-          block('invoke.nodejs', 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "' + base + '",\n  apiKey: "sk-"\n});\nconst r = await client.chat.completions.create({\n  model: "gpt-5.3-codex",\n  messages: [{ role: "user", content: "Hello" }]\n});\nconsole.log(r);', 'javascript');
+          block('invoke.nodejs', 'import OpenAI from "openai";\n\nconst client = new OpenAI({\n  baseURL: "' + base + '",\n  apiKey: "sk-"\n});\nconst r = await client.chat.completions.create({\n  model: "gpt-5.3-codex",\n  messages: [{ role: "user", content: "Hello" }]\n});\nconsole.log(r);', 'javascript') +
+          '<div class="doc-section" style="margin-top:24px"><h3 class="doc-h2" data-i18n="invoke.chat_multi_turn">' + (t('invoke.chat_multi_turn') || '多轮对话示例') + '</h3><div class="doc-cmd-block"><pre class="doc-pre language-python"><code class="language-python">' + escapeHtml(multiTurnPy) + '</code></pre></div></div>';
       }
       if (typeof Prism !== 'undefined') {
         document.querySelectorAll('#invokeDocContent pre code[class*="language-"]').forEach(function (el) { if (window.Prism && typeof Prism.highlightElement === 'function') Prism.highlightElement(el); });

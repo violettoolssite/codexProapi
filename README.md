@@ -54,6 +54,10 @@ Then open **http://localhost:1455/** in your browser and add Codex accounts via 
 
 No code or server configuration is required beyond adding accounts in the config page.
 
+## Multi-turn and backend format
+
+The proxy talks to ChatGPT’s Codex backend (`chatgpt.com/backend-api/codex/responses`). That backend only accepts **output**-style content (e.g. `output_text`) for **assistant** messages; sending `input_text` for assistant returns 400. So instead of sending assistant messages as separate items, the proxy **flattens** the full conversation into a single user message: it builds one `input_text` whose body is the dialogue with `User:`, `Assistant:`, and `System:` prefixes. Clients keep using the usual OpenAI format `messages: [{role, content}, ...]`; the proxy performs this conversion for multi-turn.
+
 ## Features
 
 - **Multi-account round-robin** — Requests are distributed across accounts; one account failure automatically switches to the next (failover).
