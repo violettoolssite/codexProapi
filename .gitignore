@@ -1,9 +1,31 @@
+# 依赖
 node_modules/
+
+# 环境与本地配置（含敏感信息）
 .env
+.env.*
+!.env.example
+
+# 日志与调试
 *.log
-.DS_Store
+npm-debug.log*
+
+# 本地数据（账号、用量等勿提交）
 data/
-*.learn/
-scripts/
+
+# 构建产物（本地/CI 构建，勿提交）
+dist/
+release/
+
+# 学习/技能记录（可选保留于本地）
+.learn/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# 其它项目/实验目录（按需保留）
 email_workers.js/
 browser-extension/

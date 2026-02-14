@@ -94,6 +94,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// 版本号以 package.json 为准，供前端统一显示
+try {
+  const pkgPath = join(__dirname, '..', 'package.json');
+  const pkg = JSON.parse(readFileSync(pkgPath, 'utf8'));
+  app.get('/api/version', (req, res) => res.json({ version: pkg.version || '0.0.0' }));
+} catch {
+  app.get('/api/version', (req, res) => res.json({ version: '0.0.0' }));
+}
+
 app.use(express.static(join(__dirname, '..', 'public')));
 
 const requestLogs = [];

@@ -1,7 +1,8 @@
 {
   "name": "codex-proapi",
-  "version": "1.0.5",
-  "description": "Expose Codex (gpt-5.3-codex) as OpenAI-compatible API",
+  "version": "1.0.6",
+  "description": "将 Codex (gpt-5.3-codex) 以 OpenAI 兼容 API 形式暴露，可在 Cline、Cursor 等客户端中使用。桌面版内置配置页，开箱即用。",
+  "author": "violettoolssite",
   "type": "module",
   "main": "electron/main.cjs",
   "bin": {
@@ -50,7 +51,7 @@
     "productName": "Codex Pro API",
     "directories": { "output": "release" },
     "extraResources": [{ "from": "dist/app", "to": "app", "filter": ["**/*"] }],
-    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }] },
+    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }], "forceCodeSigning": false },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,

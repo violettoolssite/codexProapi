@@ -25,10 +25,8 @@
 不想用命令行时，可直接安装桌面版：
 
 1. 打开 [GitHub Releases](https://github.com/violettoolssite/codexProapi/releases)。
-2. 选择最新版本（如 `v1.0.6`），在 **Assets** 中下载您系统对应的**安装包**：
-   - **Windows**：`Codex Pro API Setup x.x.x.exe`（安装时可选路径、桌面/开始菜单快捷方式）
-   - **macOS**：`Codex Pro API-x.x.x.dmg`
-   - **Linux**：`Codex Pro API-x.x.x.AppImage`
+2. 选择最新版本（如 `v1.0.6`），在 **Assets** 中下载 **Windows 安装包**：`Codex Pro API Setup x.x.x.exe`（安装时可选路径、桌面/开始菜单快捷方式）。  
+   **说明：** 桌面版目前仅提供 Windows；macOS / Linux 用户请使用下方「命令行运行」方式。
 3. 安装并运行后，配置页会**直接在软件窗口内打开**，无需使用浏览器；关闭软件后，本地服务会随之关闭。账号与数据保存在您本机的用户数据目录，与安装目录分离。
 
 ### 方式二：命令行运行
@@ -41,6 +39,10 @@ codex-proapi
 ```
 
 或在项目目录执行 `npm install` 后运行 `npm start`。然后在浏览器打开 **http://localhost:1455/**。默认端口为 **1455**；全局安装时，账号与用量数据保存在 `~/.codex-proapi/`。
+
+### 本地构建 Windows 安装包（开发者）
+
+桌面版仅提供 **Windows** 安装包。在项目目录执行 `npm run dist:win`，输出在 `release/` 目录。若出现「Cannot create symbolic link」错误，请以**管理员身份**运行终端，或开启**开发者模式**（设置 → 更新和安全 → 开发者选项）后重试。
 
 ---
 

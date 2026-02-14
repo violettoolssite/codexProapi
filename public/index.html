@@ -1516,7 +1516,7 @@
       <div class="logo-icon">CP</div>
       <div>
         <div class="logo-text">Codex Pro API</div>
-        <div class="logo-sub">Proxy v1.0.5</div>
+        <div class="logo-sub" data-i18n="version.proxy">Proxy v…</div>
       </div>
     </div>
     <nav class="menu">
@@ -1543,7 +1543,7 @@
         </button>
         <div>
           <div class="topbar-title">Codex Pro API</div>
-          <div class="topbar-sub" data-i18n="topbar.subtitle">CODEX PROXY SYSTEM v1.0.5</div>
+          <div class="topbar-sub" data-i18n="topbar.subtitle">CODEX PROXY SYSTEM v…</div>
         </div>
       </div>
       <div class="topbar-status">
@@ -1754,7 +1754,7 @@
           <div class="card" style="max-width: 100%;">
             <h3 class="settings-section-title" data-i18n="settings.section_about">关于</h3>
             <div class="settings-about">
-              <span class="ver" id="settings-version">v1.0.5</span>
+              <span class="ver" id="settings-version" data-i18n="version.short">v…</span>
               <span data-i18n="settings.about_desc">Codex Pro API · OpenAI 兼容代理</span>
               <div style="margin-top: 10px;">
                 <a href="https://github.com/violettoolssite/codexProapi" target="_blank" rel="noopener" style="color: var(--accent); font-size: 12px;">GitHub</a>
@@ -1955,7 +1955,9 @@
         'nav.invoke': '调用',
         'nav.logs': '日志',
         'nav.settings': '设置',
-        'topbar.subtitle': 'CODEX PROXY SYSTEM v1.0.5',
+        'topbar.subtitle': 'CODEX PROXY SYSTEM v{{version}}',
+        'version.proxy': 'Proxy v{{version}}',
+        'version.short': 'v{{version}}',
         'topbar.online': '在线',
         'page.dashboard': '仪表盘',
         'page.models': '模型',
@@ -2084,7 +2086,9 @@
         'nav.invoke': 'Invoke',
         'nav.logs': 'Logs',
         'nav.settings': 'Settings',
-        'topbar.subtitle': 'CODEX PROXY SYSTEM v1.0.5',
+        'topbar.subtitle': 'CODEX PROXY SYSTEM v{{version}}',
+        'version.proxy': 'Proxy v{{version}}',
+        'version.short': 'v{{version}}',
         'topbar.online': 'ONLINE',
         'page.dashboard': 'Dashboard',
         'page.models': 'Models',
@@ -2211,7 +2215,9 @@
 
     function t(key) {
       const str = translations[locale] && translations[locale][key];
-      return str != null ? str : (translations.en[key] || key);
+      const raw = str != null ? str : (translations.en[key] || key);
+      const ver = (typeof window !== 'undefined' && window.APP_VERSION) || '';
+      return raw.replace(/\{\{version\}\}/g, ver);
     }
 
     function applyLocale() {
@@ -2751,7 +2757,7 @@
       loadList();
     });
 
-    applyLocale();
+    fetch('/api/version').then(r => r.json()).then(d => { window.APP_VERSION = d.version || ''; applyLocale(); }).catch(() => { window.APP_VERSION = ''; applyLocale(); });
     setEndpoint();
     loadList();
     handleOAuthReturn();
