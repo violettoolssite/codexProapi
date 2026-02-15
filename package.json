@@ -1,6 +1,6 @@
 {
   "name": "codex-proapi",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "将 Codex (gpt-5.3-codex) 以 OpenAI 兼容 API 形式暴露，可在 Cline、Cursor 等客户端中使用。桌面版内置配置页，开箱即用。",
   "author": "violettoolssite",
   "type": "module",
@@ -28,6 +28,7 @@
     "node": ">=18"
   },
   "dependencies": {
+    "codex-proapi": "^1.0.7",
     "express": "^4.21.0"
   },
   "devDependencies": {
@@ -49,16 +50,45 @@
   "build": {
     "appId": "cloud.violet.codex-proapi",
     "productName": "Codex Pro API",
-    "directories": { "output": "release" },
-    "extraResources": [{ "from": "dist/app", "to": "app", "filter": ["**/*"] }],
-    "win": { "target": [{ "target": "nsis", "arch": ["x64"] }], "forceCodeSigning": false },
+    "directories": {
+      "output": "release"
+    },
+    "extraResources": [
+      {
+        "from": "dist/app",
+        "to": "app",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "forceCodeSigning": false
+    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     },
-    "mac": { "target": ["dmg"], "category": "public.app-category.developer-tools" },
-    "linux": { "target": ["AppImage"] }
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.developer-tools"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
   }
 }

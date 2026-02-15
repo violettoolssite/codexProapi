@@ -25,7 +25,7 @@ Exposes **Codex** (gpt-5.3-codex) as an **OpenAI-compatible API** so you can use
 If you prefer not to use the command line:
 
 1. Open [GitHub Releases](https://github.com/violettoolssite/codexProapi/releases).
-2. Pick the latest release (e.g. `v1.0.6`) and download the **Windows installer** from **Assets**: `Codex Pro API Setup x.x.x.exe` (you can choose install path and desktop/Start menu shortcuts).  
+2. Pick the latest release (e.g. `v1.0.7`) and download the **Windows installer** from **Assets**: `Codex Pro API Setup x.x.x.exe` (you can choose install path and desktop/Start menu shortcuts).  
    **Note:** The desktop app is **Windows only** for now; on macOS or Linux, use the command-line option below.
 3. Install and run; the config page opens **inside the app window** (no browser). Closing the app stops the local service. Accounts and data are stored in your local user data directory, separate from the install folder.
 
@@ -66,6 +66,12 @@ If you see **region restriction**, **access_denied**, or similar after clicking 
 2. **Paste auth.json instead**: On a device where Codex login works (e.g. another computer or a browser with VPN), open `~/.codex/auth.json` (Windows: `%USERPROFILE%\\.codex\\auth.json`), copy its contents, then go to Accounts → Add account → Paste JSON and submit.
 
 The same instructions are shown on the page when this error appears.
+
+### VPN on but still "unsupported region"?
+
+- **Make sure the login page uses the VPN too**: After clicking "Login with Codex" you are redirected to OpenAI’s login; that page must also go through your VPN. If only some apps use the proxy and the browser does not, the login page still sees your real IP. Use system-wide or browser proxy and ensure it’s on before clicking login.
+- **Try another VPN server or provider**: Some servers may still be detected as unsupported, or leak IP/DNS. Try a different node (e.g. US) or another VPN.
+- **Prefer pasting auth.json**: On any environment where Codex login works (e.g. another machine with VPN, or a browser that already logged in with VPN), open `~/.codex/auth.json`, copy its contents, then in Codex Pro API go to Accounts → Add account → Paste JSON. No OAuth on this machine needed.
 
 ---
 

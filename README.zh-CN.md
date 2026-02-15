@@ -25,7 +25,7 @@
 不想用命令行时，可直接安装桌面版：
 
 1. 打开 [GitHub Releases](https://github.com/violettoolssite/codexProapi/releases)。
-2. 选择最新版本（如 `v1.0.6`），在 **Assets** 中下载 **Windows 安装包**：`Codex Pro API Setup x.x.x.exe`（安装时可选路径、桌面/开始菜单快捷方式）。  
+2. 选择最新版本（如 `v1.0.7`），在 **Assets** 中下载 **Windows 安装包**：`Codex Pro API Setup x.x.x.exe`（安装时可选路径、桌面/开始菜单快捷方式）。  
    **说明：** 桌面版目前仅提供 Windows；macOS / Linux 用户请使用下方「命令行运行」方式。
 3. 安装并运行后，配置页会**直接在软件窗口内打开**，无需使用浏览器；关闭软件后，本地服务会随之关闭。账号与数据保存在您本机的用户数据目录，与安装目录分离。
 
@@ -70,6 +70,24 @@ codex-proapi
 2. **改用粘贴 auth.json**：在能正常登录 Codex 的设备上（例如另一台电脑或已开代理的浏览器），打开 `~/.codex/auth.json`（Windows：`%USERPROFILE%\\.codex\\auth.json`）复制全部内容，在本页「账号」→「添加账号」→「粘贴 JSON」中粘贴并添加。
 
 页面上出现此类错误时也会显示上述操作说明。
+
+### 挂了 VPN 仍显示「不支持的地区」怎么办？
+
+若已开启 VPN 仍提示地区限制，可逐项排查：
+
+- **确保「登录页」也走代理**：点击「使用 Codex 登录」后会跳转到 OpenAI 登录页，**该页面的访问也必须走 VPN**。若只有本机部分软件走代理、而浏览器未走代理，登录页仍会按你本机 IP 判定地区。请确认浏览器使用的是系统代理或全局代理，且代理已开启后再点登录。
+- **换节点或换 VPN**：部分代理节点所在国家/地区可能仍被判定为非支持地区，或存在 IP/DNS 泄漏。可尝试更换节点（优先选美国等支持地区）或更换 VPN 服务后重试。
+- **优先改用「粘贴 auth.json」**：在**能正常登录 Codex** 的环境（例如另一台已开代理的电脑、或同一台电脑上已用代理登录过 Codex 的浏览器），打开 `~/.codex/auth.json`（Windows：`%USERPROFILE%\\.codex\\auth.json`），复制全部内容，回到本机 Codex Pro API 的「账号」→「添加账号」→「粘贴 JSON」中粘贴并添加，即可不依赖本机 OAuth 登录。
+
+---
+
+## 请求接口返回 "fetch failed" / proxy_error
+
+若调用 `POST /v1/chat/completions` 时返回 `{"error":{"message":"fetch failed",...}}`，表示**本服务无法连上 Codex 后端**（chatgpt.com），请求在发出去之前就失败了。请逐项检查：
+
+1. **是否已添加账号**：在配置页「账号」中至少添加一个 Codex 账号（OAuth 登录或粘贴 auth.json）。
+2. **本机能否访问 chatgpt.com**：在浏览器或本机执行 `curl -I https://chatgpt.com`，若超时或被墙，需在本机或运行本服务的环境开启 **VPN/代理** 后再试（与「使用 Codex 登录」一样，请求 Codex 的流量也要走代理）。
+3. **桌面版**：若用桌面版，请确保运行桌面版的那台电脑能访问 chatgpt.com（或在该电脑上开 VPN）。
 
 ---
 

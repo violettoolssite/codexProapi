@@ -336,9 +336,13 @@ export async function handleChatCompletions(openaiReq, res, authProvider = null,
   }
 
   if (!res.headersSent) {
+    let msg = lastError?.message ?? 'Proxy error';
+    if (msg === 'fetch failed' || /^fetch failed/i.test(msg)) {
+      msg = 'fetch failed: 无法连接 Codex 后端 (chatgpt.com)。请检查网络/VPN，并确认已添加至少一个 Codex 账号。详见配置页或 README。';
+    }
     res.status(500).json({
       error: {
-        message: lastError?.message ?? 'Proxy error',
+        message: msg,
         type: 'proxy_error',
         code: 'internal_error',
       },
